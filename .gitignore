@@ -1,0 +1,12 @@
+# Exclude Terraform folder
+.terraform/
+
+# Exclude Terraform state backup files
+*.tfstate.backup
+
+# Exclude Terraform lock file
+.terraform.lock.hcl
+
+terraform.tfstate.backup
+
+terraform.tfstate
