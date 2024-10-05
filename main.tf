@@ -6,7 +6,7 @@ resource "random_pet" "cosmosdb_name" {
 
 # This file is used to create a resource group in Azure
 resource "azurerm_resource_group" "rg" {
-    name     = "api-cloud-computing"
+    name     = "${random_pet.cosmosdb_name.id}-api-cloud-computing"
     location = var.location
 }
 
@@ -25,6 +25,9 @@ resource "azurerm_cosmosdb_account" "cosmosdb_account" {
     consistency_level       = "BoundedStaleness"
     max_interval_in_seconds = 300
     max_staleness_prefix    = 100000
+  }
+  lifecycle {
+    prevent_destroy = true  # Empêche la destruction accidentelle
   }
   depends_on = [
     azurerm_resource_group.rg
@@ -66,4 +69,37 @@ resource "azurerm_cosmosdb_sql_container" "main" {
     paths = ["/definition/idlong", "/definition/idshort"]
   }
 
+}
+
+resource "azurerm_service_plan" "appservice-plan" {
+  name                = "appservice-plan-api-cc"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = var.location
+  os_type             = "Linux"
+  sku_name            = "B1"
+}
+
+resource "azurerm_linux_web_app" "linux-web-app" {
+  name                = "${random_pet.cosmosdb_name.id}-linux-web-app"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = var.location
+  service_plan_id     = azurerm_service_plan.appservice-plan.id
+  site_config {
+    application_stack {
+      python_version = "3.12"
+    }
+  }
+}
+
+resource "azurerm_app_service_source_control" "source_control" {
+  app_id                 = azurerm_linux_web_app.linux-web-app.id
+  repo_url               = var.github_repo_link
+  branch                 = "main"
+  use_manual_integration = true
+}
+
+resource "azurerm_source_control_token" "source_control_token" {
+  type         = "GitHub"
+  token        = var.github_auth_token
+  token_secret = var.github_auth_token
 }
