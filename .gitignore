@@ -11,4 +11,3 @@ terraform.tfstate.backup
 
 terraform.tfstate
 
-varaiables.tf
