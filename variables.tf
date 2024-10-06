@@ -18,14 +18,14 @@ variable "cosmosdb_account_name" {
 
 variable "github_repo_link" {
   type        = string
-  default     = "https://github.com/AntoineMIGNIEN/API-Cloud-Computing.git"
+  default     = "GITHUB_REPO_LINK"
   description = "GitHub repository link"
 }
 
 
 variable "github_auth_token" {
   type        = string
-  default     = "YourGitHubToken"
+  default     = "GITHUB_AUTH_TOKEN"
   description = "GitHub personal access token"
   
 }

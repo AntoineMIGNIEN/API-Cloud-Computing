@@ -9,5 +9,7 @@
 
 terraform.tfstate.backup
 
+.env
+
 terraform.tfstate
 
