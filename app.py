@@ -1,12 +1,6 @@
 from flask import Flask, request, render_template
 from azure.storage.blob import BlobServiceClient
-from dotenv import load_dotenv
 import os
-
-app = Flask(__name__)
-
-# Charger les variables d'environnement
-load_dotenv()
 
 app = Flask(__name__)
 
