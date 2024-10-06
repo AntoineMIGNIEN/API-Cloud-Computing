@@ -1,12 +1,17 @@
 from flask import Flask, request, render_template
 from azure.storage.blob import BlobServiceClient
+from dotenv import load_dotenv
 import os
-import env
+
+app = Flask(__name__)
+
+# Charger les variables d'environnement
+load_dotenv()
 
 app = Flask(__name__)
 
 # .env pour la connexion au Blob Storage
-connect_str = f"DefaultEndpointsProtocol=https;AccountName={env.ACCOUNT_NAME};romantic-snipe-api-cloud-computing={env.ACCOUNT_KEY};EndpointSuffix=core.windows.net"
+connect_str = f"DefaultEndpointsProtocol=https;AccountName={os.getenv('ACCOUNT_NAME')};AccountKey={os.getenv('ACCOUNT_KEY')};EndpointSuffix=core.windows.net"
 container_name = "blob-container-api-cc"
 
 # Créer un client pour le service de stockage
